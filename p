@@ -17,7 +17,7 @@ foreach (@result) {
 sub getFullname {
   $_ = shift @_;
   /^(1696|1896|1979)$/ && return sprintf "sz%06s", $_;
-  /^[13]?\d{1,3}$/ && return sprintf "sh6%05s", $_;
+  /^(\d{1,3}|[13]\d{3})$/ && return sprintf "sh6%05s", $_;
   /^c(\d+)$/ && return sprintf "sz300%03s", $1;
   /^[02]\d{3}$/ && return sprintf "sz%06s", $_;
 }
