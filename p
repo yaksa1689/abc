@@ -12,7 +12,7 @@ my $stocks = join ',', @stocks;
 my @result = `curl -s http://hq.sinajs.cn/list=$stocks | iconv -fgbk -tutf-8`;
 
 foreach (@result) {
-  /(\d{6})="(\S+)"/;
+  /(\d{6})="([\S ]+)"/;
   my $code = $1;
   my @data = split ',', $2;
   if ($#data > -1 && @data[1] != 0) {
