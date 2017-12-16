@@ -11,12 +11,8 @@ my @result = `curl -s http://hq.sinajs.cn/list=$stocks | iconv -fgbk -tutf-8`;
 
 foreach (@result) {
   /(\d{6})="([\S ]+)"/;
-  my $code = $1;
   my @data = split ',', $2;
-  if ($#data > -1 && @data[1] != 0) {
-    my $inc = (sprintf "%.2f%", (@data[3] / $data[2] - 1) * 100) =~ s/^(\d)/+$1/r;
-    print "$code  @data[0]  $inc\n";
-  }
+  $#data > -1 && @data[1] != 0 && print sprintf "%s  %s  %s\n", $1, @data[0], (sprintf "%.2f%", (@data[3] / $data[2] - 1) * 100) =~ s/^(\d)/+$1/r;
 }
 
 sub getFullname {
