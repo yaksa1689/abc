@@ -1,14 +1,15 @@
 #!/usr/bin/env perl
 use strict;
 
-my @data = `cat data`;
+my $dataPath = './data';
+my @data = `cat $dataPath`;
 my @stocks;
 foreach (@ARGV) {
   &getFullname($_) =~ /^(s.*)$/ &&  push @stocks, $1;
 }
 $#stocks > -1 || exit 0;
 my $stocks = join ',', @stocks;
-my @stockList = `curl -s http://hq.sinajs.cn/list=$stocks | iconv -fgbk -tutf-8`;
+my @stockList = `curl -s http://hq.sinajs.cn/list=$stocks | iconv -f gbk -t utf-8`;
 
 foreach (@stockList) {
   /(\d{6})="([^,]+),([^,]+),([^,]+),([^,]+),([^,]+).+$/ && 
@@ -28,7 +29,7 @@ sub getFullname {
 sub getGrouplist {
   $_ = shift @_;
   my @list;
-  `grep -Ehn "^# $_" data` =~ /^(\d+)/;
+  `grep -Ehn "^# $_" $dataPath` =~ /^(\d+)/;
   foreach ($1..$#data) {
     @data[$_] !~ /^\d|c/ && last;
     @data[$_] =~ /^(.+)$/ && push @list, &getFullname($1);
